@@ -27,8 +27,9 @@ startup
 {
 	var flagDict = new Dictionary<int, string> {
 		{10, "Black Ferrets I"},
-		{17, "Giga Slime"},
+		{18, "Giga Slime"},
 		{27, "Phaseman"},
+		{36, "The Sentry"},
 		{38, "GUN-D4M"},
 		{103, "Marino I"},
 		{117, "Toy Factory"},
@@ -36,7 +37,7 @@ startup
 		{153, "Season Hydras"},
 		{167, "Winter"},
 		{174, "Festival Start"},
-		{188, "Black Ferrets II"},
+		{171, "Festival Over"},
 		{250, "Red Spinsect Sequence"},
 		{251, "Power Flower"},
 		{350, "Cursed Priestess"},
@@ -52,8 +53,9 @@ startup
 	
 	var flagTooltips = new Dictionary<int, string> {
 		{10, "Splits after defeating the Black Ferrets in Pillar Mountains"},
-		{17, "Splits after defeating the Giga Slime during The Collector's Exam"},
+		{18, "Splits after defeating the Giga Slime during The Collector's Exam"},
 		{27, "Splits after defeating Phaseman in Flying Fortress\nPS: The actual split happens after picking up the Phase Ability"},
+		{36, "Splits after defeating The Sentry in Flying Fortress"},
 		{38, "Splits after defeating GUN-D4M in Flying Fortress"},
 		{103, "Splits after defeating Marino in front of his Mansion"},
 		{117, "Splits after completing the Toy Factory in Seasonne"},
@@ -61,7 +63,7 @@ startup
 		{153, "Splits after defeating Season Hydras in Temple of Seasons"},
 		{167, "Splits after defeating Winter in Temple of Seasons"},
 		{174, "Splits after initiating the Festival"},
-		{188, "Splits after defeating the Black Ferrets during the Festival"},
+		{171, "Splits after completing the Festival"},
 		{250, "Splits after completing the Red Spinsect Sequence in Mount Bloom"},
 		{251, "Splits after defeating Power Flower in Mount Bloom"},
 		{350, "Splits after defeating Cursed Priestess in Tai Ming"},
