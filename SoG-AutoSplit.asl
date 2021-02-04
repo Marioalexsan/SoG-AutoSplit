@@ -41,14 +41,14 @@ startup
 		{250, "Red Spinsect Sequence"},
 		{251, "Power Flower"},
 		{350, "Cursed Priestess"},
-		{395, "Giant Thorn-Worm"},
+		{389, "Giant Thorn-Worm"},
 		{432, "Zhamla"},
 		{434, "Mimic"},
 		{510, "Marino II"},
 		{526, "Sol-Gem"},
 		{658, "Captain Bones"},
 		{682, "Evil Eye"},
-		{701, "Luke"}
+		{699, "Luke"}
 	};
 	
 	var flagTooltips = new Dictionary<int, string> {
@@ -67,14 +67,14 @@ startup
 		{250, "Splits after completing the Red Spinsect Sequence in Mount Bloom"},
 		{251, "Splits after defeating Power Flower in Mount Bloom"},
 		{350, "Splits after defeating Cursed Priestess in Tai Ming"},
-		{395, "Splits after defeating the Giant Thorn-Worms in Tai Ming"},
+		{389, "Splits after defeating the Giant Thorn-Worms in Tai Ming\nPS: The actual split happens after obtaining the Emblem of Valor"},
 		{432, "Splits after defeating Zhamla in Tai Ming"},
 		{434, "Splits after defeating Mimic in Tai Ming\nPS: The actual split happens after opening Mimic and getting the Crown"},
 		{510, "Splits after defeating Marino in Dragonbone Dunes"},
 		{526, "Splits after defeating Sol-Gem in Dragonbone Dunes"},
 		{658, "Splits after defeating Captain Bones in Lost Ship"},
 		{682, "Splits after defeating Evil Eye in Lost Ship"},
-		{701, "Splits after defeating Luke in Lost Ship"}
+		{699, "Splits after defeating Luke in Lost Ship"}
 	};
 
 	// Load Removal
