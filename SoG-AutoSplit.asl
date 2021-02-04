@@ -14,12 +14,13 @@ state("Secrets Of Grindea") {}
 
 startup
 {
+	// Stores completed Flags so that we don't double split if we detect the same flag twice
 	vars.completedFlags = new HashSet<ushort>();
 
-    vars.timerStart = (EventHandler) ((s, e) => {
+	vars.timerStart = (EventHandler) ((s, e) => {
         vars.completedFlags.Clear();
 		});
-    timer.OnStart += vars.timerStart;
+	timer.OnStart += vars.timerStart;
 
 	var flagDict = new Dictionary<int, string> {
 		{10, "Black Ferrets I"},
@@ -99,7 +100,8 @@ startup
 	}
 }
 
-shutdown {
+shutdown
+{
     timer.OnStart -= vars.timerStart;
 }
 
