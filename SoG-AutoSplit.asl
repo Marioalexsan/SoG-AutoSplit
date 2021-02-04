@@ -10,21 +10,17 @@
  * Big thanks to Ero and other folks from the Speedrun Tool Development Discord server
 */
 
-// Code Graveyard
-
-	//vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.GamePtr, 0x164)) { Name = "GameSessionData" });
-	//vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.GamePtr, 0x164, 0x02C)) { Name = "RoguelikeSessionData" });
-	//vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.GamePtr, 0x148)) { Name = "LevelMaster" });
-	//vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.GamePtr, 0x158)) { Name = "CutsceneMaster" });
-	//vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.GamePtr, 0x154)) { Name = "StateMaster" });
-	//vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.GamePtr, 0x164, 0x00C)) { Name = "ActiveFlagsHashSet" });
-
-// Code Graveyard End
-
 state("Secrets Of Grindea") {}
 
 startup
 {
+	vars.completedFlags = new HashSet<ushort>();
+
+    vars.timerStart = (EventHandler) ((s, e) => {
+        vars.completedFlags.Clear();
+		});
+    timer.OnStart += vars.timerStart;
+
 	var flagDict = new Dictionary<int, string> {
 		{10, "Black Ferrets I"},
 		{18, "Giga Slime"},
@@ -103,8 +99,8 @@ startup
 	}
 }
 
-shutdown
-{
+shutdown {
+    timer.OnStart -= vars.timerStart;
 }
 
 init
@@ -170,10 +166,14 @@ start
 
 split
 {
-	if (vars.flagCount.Old < vars.flagCount.Current) {
+	if (vars.flagCount.Old != 0 && vars.flagCount.Old < vars.flagCount.Current) {
 		ushort flagAtIndex;
 		new DeepPointer((IntPtr)vars.gamePtr, 0x164, 0xC, 0x8, 0x4 + vars.flagCount.Current * 0xC).Deref<ushort>(game, out flagAtIndex);
-		return settings["flag" + flagAtIndex.ToString()];
+		if (settings["flag" + flagAtIndex.ToString()] && !vars.completedFlags.Contains(flagAtIndex)) {
+			vars.completedFlags.Add(flagAtIndex);
+			return true;
+		}
+		return false;
 	}
 
 	return vars.inArcadeRun.Current && vars.arcadeFloor.Changed;
