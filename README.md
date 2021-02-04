@@ -6,6 +6,7 @@ LiveSplit Autosplitter for Secrets of Grindea
 * Load Removal
 * Cutscene Removal
 * Autosplitting for Story Mode and Arcade Mode
+* Automatic Start
 * Automatic Resets
 
 ## Story Mode Split List
