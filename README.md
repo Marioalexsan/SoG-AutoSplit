@@ -13,6 +13,7 @@ LiveSplit Autosplitter for Secrets of Grindea
 * Black Ferrets I
 * Giga Slime
 * Phaseman
+* The Sentry
 * GUN-D4M
 * Marino I
 * Toy Factory
@@ -20,7 +21,7 @@ LiveSplit Autosplitter for Secrets of Grindea
 * Season Hydras
 * Winter
 * Festival Start
-* Black Ferrets II
+* Festival Over
 * Red Spinsect Sequence
 * Power Flower
 * Cursed Priestess
