@@ -105,7 +105,7 @@ startup
 	
 	var csTooltips = new Dictionary<int, string> {
 		{1, "Festival Game Cutscenes will not stop time during their interactive part.\nThis includes the Strength, Running and Fishing Games."},
-		{2, "The Dhield Training Cutscene in Spookington will not stop time."}
+		{2, "The Shield Training Cutscene in Spookington will not stop time."}
 	};
 	
 	// ----------------------------------------------------- //
