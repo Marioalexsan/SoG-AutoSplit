@@ -143,12 +143,13 @@ init
 	vars.arcadeFloor	 = new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.gamePtr, 0x164, 0x2C, 0xB4));
 	vars.gameMode		 = new MemoryWatcher<byte>(new DeepPointer((IntPtr)vars.gamePtr, 0x154, 0x20));
 	vars.gameState		 = new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.gamePtr, 0x154, 0x14));
+	vars.levelUnloading	 = new MemoryWatcher<bool>(new DeepPointer((IntPtr)vars.gamePtr, 0x148, 0x37));
 	vars.levelLoaded	 = new MemoryWatcher<bool>(new DeepPointer((IntPtr)vars.gamePtr, 0x148, 0x38));
 	vars.inCutscene		 = new MemoryWatcher<bool>(new DeepPointer((IntPtr)vars.gamePtr, 0x158, 0x18));
 	vars.flagCount		 = new MemoryWatcher<int>(new DeepPointer((IntPtr)vars.gamePtr, 0x164, 0xC, 0x18));
 	
 	vars.watcherUpdater = new MemoryWatcherList() {
-		vars.inArcadeRun, vars.arcadeFloor, vars.gameMode, vars.gameState, vars.levelLoaded, vars.inCutscene, vars.flagCount
+		vars.inArcadeRun, vars.arcadeFloor, vars.gameMode, vars.gameState, vars.levelUnloading, vars.levelLoaded, vars.inCutscene, vars.flagCount
 	};
 	
 	timer.CurrentTimingMethod = TimingMethod.GameTime;
@@ -190,5 +191,5 @@ reset
 
 isLoading
 {
-	return settings["removeLoad"] && (!vars.levelLoaded.Current || settings["cutsceneIsLoad"] && vars.inCutscene.Current);
+	return settings["removeLoad"] && (vars.levelUnloading.Current || !vars.levelLoaded.Current || settings["cutsceneIsLoad"] && vars.inCutscene.Current);
 }
