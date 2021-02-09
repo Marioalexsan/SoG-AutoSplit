@@ -121,7 +121,7 @@ startup
 	
 	foreach (var cs in csDict)
 	{
-		settings.Add("cs" + cs.Key, false, cs.Value, "cutsceneIsLoad"); // Adds a cutscene exclusion
+		settings.Add("cs" + cs.Key, true, cs.Value, "cutsceneIsLoad"); // Adds a cutscene exclusion
 			settings.SetToolTip("cs" + cs.Key, csTooltips[cs.Key]);
 	}
 	
