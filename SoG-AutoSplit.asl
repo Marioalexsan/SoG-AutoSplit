@@ -230,7 +230,7 @@ start
 
 split
 {
-	if (vars.flagCount.Old != 0 && vars.flagCount.Old < vars.flagCount.Current) {
+	if (vars.gameMode.Current == 0 && vars.flagCount.Old != 0 && vars.flagCount.Old < vars.flagCount.Current) {
 		ushort flagAtIndex;
 		new DeepPointer((IntPtr)vars.gamePtr, 0x164, 0xC, 0x8, 0x4 + vars.flagCount.Current * 0xC).Deref<ushort>(game, out flagAtIndex);
 		if (settings["flag" + flagAtIndex.ToString()] && !vars.completedFlags.Contains(flagAtIndex)) {
@@ -240,7 +240,7 @@ split
 		return false;
 	}
 
-	return vars.inArcadeRun.Current && vars.arcadeFloor.Changed;
+	return vars.inArcadeRun.Current && vars.arcadeFloor.Changed && vars.arcadeFloor.Current > vars.arcadeFloor.Old;
 }
 
 reset
