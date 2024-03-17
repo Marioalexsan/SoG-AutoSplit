@@ -45,13 +45,17 @@ startup
 		{"flag658", MakePair("Captain Bones", "Defeat Captain Bones in Lost Ship.")},
 		{"flag682", MakePair("Evil Eye", "Defeat Evil Eye in Lost Ship.")},
 		{"flag699", MakePair("Luke", "Defeat Luke in Lost Ship.")},
-		{"flag804", MakePair("Bishop (optional)", "Defeat Bishop in the void realm. (0.920a)")},
-		{"flag15007", MakePair("Living Rune Block (optional)", "Defeat Living Rune Block in one of Seasonne's caves. (0.920a)")},
-		{"quest10011_obj0", MakePair("Bossling (optional)", "Defeat Bossling as part of the quest \"Goblin Grinch\". (0.920a)")},
-		{"quest10034_obj1", MakePair("Shruboss (optional)", "Defeat Shruboss and complete the quest \"Bloomy Barn Brawl\". (0.920a)")},
-		{"quest10035_obj4", MakePair("Remedi (optional)", "Defeat Remedi as part of the quest \"The Remedy\". (0.920a)")},
-		{"quest10032_obj0", MakePair("Furious Giga Slime (optional)", "Defeat FGS as part of the quest \"One Measly Slime\". (0.920a)")},
-		{"quest10033_obj1", MakePair("Elder Boars (optional)", "Defeat the Elder Boars as part of the quest \"Sponsored Contest\". (0.920a)")}
+		{"flag823", MakePair("Puzzle floor reached", "Reach the puzzle floor in the Tower.")},
+		{"flag824", MakePair("Puzzle floor beaten", "Beat the puzzle floor in the Tower.")},
+		{"flag825", MakePair("Top of the tower reached ", "Reach the top floor in the Tower.")},
+		{"flag834", MakePair("Dad", "Defeat Dad in the Tower.")},
+		{"flag804", MakePair("Bishop (optional)", "Defeat Bishop in the void realm.")},
+		{"flag15007", MakePair("Living Rune Block (optional)", "Defeat Living Rune Block in one of Seasonne's caves.")},
+		{"quest10011_obj0", MakePair("Bossling (optional)", "Defeat Bossling as part of the quest \"Goblin Grinch\".")},
+		{"quest10034_obj1", MakePair("Shruboss (optional)", "Defeat Shruboss and complete the quest \"Bloomy Barn Brawl\".")},
+		{"quest10035_obj4", MakePair("Remedi (optional)", "Defeat Remedi as part of the quest \"The Remedy\".")},
+		{"quest10032_obj0", MakePair("Furious Giga Slime (optional)", "Defeat FGS as part of the quest \"One Measly Slime\".")},
+		{"quest10033_obj1", MakePair("Elder Boars (optional)", "Defeat the Elder Boars as part of the quest \"Sponsored Contest\".")}
 	};
 	
 	vars.versionedScenes = new Dictionary<string, Dictionary<int, int[]>> {

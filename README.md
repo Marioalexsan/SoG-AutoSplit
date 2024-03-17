@@ -1,5 +1,10 @@
 # SoG-AutoSplit
+
 LiveSplit Autosplitter for Secrets of Grindea
+
+## Contributors
+
+[3ps1l0n](https://www.speedrun.com/users/3ps1l0n)
 
 ## Features
 
