@@ -135,7 +135,7 @@ shutdown
 init
 {
   var moduleSize = modules.First().ModuleMemorySize;
-  var version = "Unknown";
+  version = "Unknown";
 
   if (moduleSize == 14778368)
     version = "1.01a";
@@ -151,9 +151,9 @@ init
   if (version == "1.01a")
   {
     scanTarget = new SigScanTarget(2,
-      "8D 15 ?? ?? ?? ??", 	// lea edx, [Game1 instance]
-      "E8 ?? ?? ?? ??" 		  // call (somewhere, dunno),
-      "89 7D CC" 				    // mov [ebp-34], edi
+      "8D 15 ?? ?? ?? ??", // lea edx, [Game1 instance]
+      "E8 ?? ?? ?? ??",    // call (somewhere, dunno)
+      "89 7D CC"           // mov [ebp-34], edi
     );
   }
   else
@@ -161,9 +161,9 @@ init
     // Use a fallback
     print("This version has no proper Game1 scanner available.");
     scanTarget = new SigScanTarget(2,
-      "8D 15 ?? ?? ?? ??", 	// lea edx, [Game1 instance]
-      "E8 ?? ?? ?? ??" 		  // call (somewhere, dunno),
-      "89 7D CC" 				    // mov [ebp-34], edi
+      "8D 15 ?? ?? ?? ??", // lea edx, [Game1 instance]
+      "E8 ?? ?? ?? ??",    // call (somewhere, dunno)
+      "89 7D CC"           // mov [ebp-34], edi
     );
   }
   
@@ -180,6 +180,8 @@ init
     throw new Exception("Signature scan failed! Can't read memory as a result...");
   
   vars.gamePtr = (IntPtr)memory.ReadValue<int>(functionPtr);
+
+  print("Found Game1 instance at 0x" + vars.gamePtr.ToString("X"));
   
   // ================ //
   // === Watchers === //
