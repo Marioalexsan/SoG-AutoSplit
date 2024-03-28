@@ -6,9 +6,9 @@ The data in here might be inaccurate.
 
 ## TOC
 
-* [General Information]
-* [1.0a](#1.0a)
-  * [1.0a Offsets](#1.0a%20Offsets)
+* [General Information](#general-information)
+* [1.0a](#10a)
+  * [1.0a Offsets](#10a-offsets)
 
 ## General Information
 

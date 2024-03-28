@@ -15,6 +15,9 @@ state("Secrets Of Grindea") {}
 
 startup
 {
+  var scriptVersion = "1.0.1";
+  print("SoG-AutoSplit.asl version: " + scriptVersion);
+
   Func<string, string, KeyValuePair<string, string>> MakePair = (a, b) => new KeyValuePair<string, string>(a, b);
   
   /// === Script Data === ///
@@ -51,6 +54,7 @@ startup
     {"flag825", MakePair("Top of the tower reached ", "Reach the top floor in the Tower.")},
     {"flag834", MakePair("Dad", "Defeat Dad in the Tower.")},
     {"flag804", MakePair("Bishop (optional)", "Defeat Bishop in the void realm.")},
+    {"flag829", MakePair("Cataclysm Zhamla (optional)", "Defeat the cataclysm in the tower, and watch the true ending.")},
     {"flag15007", MakePair("Living Rune Block (optional)", "Defeat Living Rune Block in one of Seasonne's caves.")},
     {"quest10011_obj0", MakePair("Bossling (optional)", "Defeat Bossling as part of the quest \"Goblin Grinch\".")},
     {"quest10034_obj1", MakePair("Shruboss (optional)", "Defeat Shruboss and complete the quest \"Bloomy Barn Brawl\".")},
@@ -257,7 +261,7 @@ split
     // TODO Improve this algorithm to reduce flag loss?
     
     if (vars.flagCount.Old != 0 && vars.flagCount.Old < vars.flagCount.Current) {
-      ushort flagAtIndex = vars.flagHashSetItemAt(vars.flagSet, vars.flagCount.Current - 1);
+      ushort flagAtIndex = vars.flagHashSetItemAt(vars.flagSet.Current, vars.flagCount.Current - 1);
       print("Got new flag " + flagAtIndex);
       if (settings["flag" + flagAtIndex.ToString()] && !vars.completedFlags.Contains(flagAtIndex)) {
         vars.completedFlags.Add(flagAtIndex);
