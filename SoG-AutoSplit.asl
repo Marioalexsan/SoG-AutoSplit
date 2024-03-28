@@ -15,7 +15,7 @@ state("Secrets Of Grindea") {}
 
 startup
 {
-  var scriptVersion = "1.0.1";
+  var scriptVersion = "1.0.2";
   print("SoG-AutoSplit.asl version: " + scriptVersion);
 
   Func<string, string, KeyValuePair<string, string>> MakePair = (a, b) => new KeyValuePair<string, string>(a, b);
@@ -82,6 +82,9 @@ startup
   
   settings.Add("cutsceneIsLoad", true, "Consider Cutscenes as Loading", "removeLoad");
   settings.SetToolTip("cutsceneIsLoad", "The Timer will not progress during Cutscenes\nThis includes Boss Fight intros, Challenge intros, Floor Results in Arcade, etc.");
+  
+  settings.Add("mainMenuIsLoad", true, "Consider Main Menu as Loading", "removeLoad");
+  settings.SetToolTip("mainMenuIsLoad", "The Timer will not progress while in the main menu.");
   
   foreach (var what in cutsceneExclusions) {
     settings.Add("cs" + what.Key, true, what.Value.Key, "cutsceneIsLoad");
@@ -342,7 +345,8 @@ isLoading
 {
   bool doCutsceneCheck = settings["cutsceneIsLoad"] && vars.inCutscene.Current;
   bool inCutscene = doCutsceneCheck && !vars.excludedCutscenes.Contains(vars.currentCutscene.Current);
+  bool mainMenuIsLoad = settings["mainMenuIsLoad"];
   
   return 
-    settings["removeLoad"] && (vars.gameState.Current == 1 || vars.zoningState.Current != 0 || inCutscene);
+    settings["removeLoad"] && (mainMenuIsLoad && vars.gameState.Current == 1 || vars.zoningState.Current != 0 || inCutscene);
 }

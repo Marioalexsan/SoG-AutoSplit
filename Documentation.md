@@ -20,6 +20,36 @@ The script uses a signature scan within `SoG.Program.Main(string[] args)` to gra
 
 Currently, there is little information on how reliable these methods are, since the .NET runtime can potentially relocate objects when doing garbage collection. Additionally, race conditions and inconsistent data might be possible, given that we inspect the memory of another application.
 
+## Updating AutoSplitter Flags
+
+Resources needed: 
+-	[ILSpy](https://github.com/icsharpcode/ILSpy/releases), a decompilation tool for .NET: 
+-	[Visual Studio Code](https://code.visualstudio.com/), a versatile text editor
+
+To browse through decompiled game code:
+- Open ILSpy
+- Go to File -> Open, select Secrets of Grindea.exe and click "Open"
+  - For Steam: `C:\Program Files (x86)\Steam\steamapps\common\SecretsOfGrindea\`
+- Select Secrets of Grindea.exe in the assembly list
+- Go to File -> Save Code, and save the project to a new folder
+- Open the folder with Visual Studio Code
+- Search for the `FlagCodex.cs` file using the Search bar, and browse through the game's flags
+- Search flags through all files by using Ctrl + Shift + F and entering a search term, such as `_MainStory_FirstCutscene`
+
+Opening `FlagCodex.cs` will open the full list of all the flags triggered during the game. Find the ones you want, and note the integer associated to them. This can be straightforward, but you may have to be creative (e.g. the flag associated to beating Marino 1 is `_MainStory_PostFlyingTemple_MarinoDefeated`, and the integer associated to it is 103. However, as there is no Zhamla defeated tag, you have to settle for `_MainStory_EndGame_TrueEndingSeen`). 
+
+For completeness, here is a table with the main types of potentially useful flags:
+
+| Type      | Description                                         |
+| --------- | --------------------------------------------------- |
+| MainStory | Triggered during the main story line                |
+| SideQuest | Triggered during side quests                        |
+| Chest     | Triggered when opening a chest                      |
+| Puzzle    | Triggered after solving a puzzle                    |
+| Map       | Triggered when solving a treasure map               |
+| Event     | Triggered by a specific in-game event               |
+| ReadBook  | Triggered after reading a book for the first time   |
+| Roguelike | Arcade related tags                                 |
 ## 1.0a
 
 ### 1.0a Offsets
