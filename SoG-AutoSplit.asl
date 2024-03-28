@@ -76,6 +76,9 @@ startup
   };
   
   /// === Settings === ///
+  /// 
+  settings.Add("aslScriptVersion", false, "[SoG-AutoSplit v" + scriptVersion + "]");
+  settings.SetToolTip("aslScriptVersion", "This is the current version of the autosplitter.");
   
   settings.Add("removeLoad", true, "Remove Load Time");
   settings.SetToolTip("removeLoad", "The Timer will freeze during Content Load.");
