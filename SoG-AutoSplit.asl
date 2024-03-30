@@ -11,11 +11,13 @@
  * Big thanks to Ero and other folks from the Speedrun Tool Development Discord server
 */
 
+
+
 state("Secrets Of Grindea") {}
 
 startup
 {
-  var scriptVersion = "1.0.2";
+  var scriptVersion = "1.0.3";
   print("SoG-AutoSplit.asl version: " + scriptVersion);
 
   Func<string, string, KeyValuePair<string, string>> MakePair = (a, b) => new KeyValuePair<string, string>(a, b);
@@ -25,7 +27,8 @@ startup
   // flagX splits on a story flag trigger. Algorithm used scans for the latest flag added.
   // questXobjY splits when completing the quest X's objective Y
   
-  var storyBossSplits = new Dictionary<string, KeyValuePair<string, string>> {
+  var storyBossSplits = new Dictionary<string, KeyValuePair<string, string>>
+  {
     {"flag10", MakePair("Black Ferrets I", "Defeat the Black Ferrets in Pillar Mountains.")},
     {"flag18", MakePair("Giga Slime", "Defeat the Giga Slime during The Collector's Exam.")},
     {"flag27", MakePair("Phaseman", "Defeat Phaseman in Flying Fortress and pick up his ability.")},
@@ -52,7 +55,7 @@ startup
     {"flag823", MakePair("Puzzle floor reached", "Reach the puzzle floor in the Tower.")},
     {"flag824", MakePair("Puzzle floor beaten", "Beat the puzzle floor in the Tower.")},
     {"flag825", MakePair("Top of the tower reached ", "Reach the top floor in the Tower.")},
-    {"flag834", MakePair("Dad", "Defeat Dad in the Tower.")},
+    {"cutscene_MainStory_EndGame_Tower_DefeatDad", MakePair("Dad", "Defeat Dad in the Tower.")},
     {"flag804", MakePair("Bishop (optional)", "Defeat Bishop in the void realm.")},
     {"flag829", MakePair("Cataclysm Zhamla (optional)", "Defeat the cataclysm in the tower, and watch the true ending.")},
     {"flag15007", MakePair("Living Rune Block (optional)", "Defeat Living Rune Block in one of Seasonne's caves.")},
@@ -63,20 +66,37 @@ startup
     {"quest10033_obj1", MakePair("Elder Boars (optional)", "Defeat the Elder Boars as part of the quest \"Sponsored Contest\".")}
   };
   
-  vars.versionedScenes = new Dictionary<string, Dictionary<int, int[]>> {
-    {"1.01a", new Dictionary<int, int[]> {
-      {1, new int[] {10082, 10084, 10086, 10088, 10090}}, 
-      {2, new int[] {10200}}
+  // Cutscene IDs are *not* set in stone
+  // This is why we need to have a versioned list of game cutscene IDs mapped to our own IDs
+  vars.versionedCutscenes = new Dictionary<string, Dictionary<string, int>>
+  {
+    {"1.01a", new Dictionary<string, int> {
+      {"_MainStory_Festival_StrengthGame", 10082},
+      {"_MainStory_Festival_FishingGame_ActualGame", 10084},
+      {"_MainStory_Festival_FishingGame_Rematch_ActualGame", 10086},
+      {"_MainStory_Festival_RunningGame_ActualGame", 10088},
+      {"_MainStory_Festival_RunningGame_Rematch_ActualGame", 10090},
+      {"_MainStory_GhostShip_ShieldTraining", 10200},
+      {"_MainStory_EndGame_Tower_DefeatDad", 10235},
     }}
   };
+  vars.versionedCutscenes["Unknown"] = vars.versionedCutscenes["1.01a"];
   
-  var cutsceneExclusions = new Dictionary<int, KeyValuePair<string, string>> {
-    {1, MakePair("Exclude Festival Games", "Festival games will not stop time during their \"active\" part.")},
-    {2, MakePair("Exclude Shield Training", "Dad's shielding section in \"Startington?\" will not stop time.")}
+  vars.cutsceneExclusions = new Dictionary<int, Tuple<string, string, string[]>>
+  {
+    {1, new Tuple<string, string, string[]>("Exclude Festival Games", "Festival games will not stop time during their \"active\" part.", new[] { 
+      "_MainStory_Festival_StrengthGame",
+      "_MainStory_Festival_FishingGame_ActualGame",
+      "_MainStory_Festival_FishingGame_Rematch_ActualGame",
+      "_MainStory_Festival_RunningGame_ActualGame",
+      "_MainStory_Festival_RunningGame_Rematch_ActualGame",
+    })},
+    {2, new Tuple<string, string, string[]>("Exclude Shield Training", "Dad's shielding section in \"Startington?\" will not stop time.", new[] {
+      "_MainStory_GhostShip_ShieldTraining",
+    })}
   };
   
   /// === Settings === ///
-  /// 
   settings.Add("aslScriptVersion", false, "[SoG-AutoSplit v" + scriptVersion + "]");
   settings.SetToolTip("aslScriptVersion", "This is the current version of the autosplitter.");
   
@@ -89,9 +109,10 @@ startup
   settings.Add("mainMenuIsLoad", true, "Consider Main Menu as Loading", "removeLoad");
   settings.SetToolTip("mainMenuIsLoad", "The Timer will not progress while in the main menu.");
   
-  foreach (var what in cutsceneExclusions) {
-    settings.Add("cs" + what.Key, true, what.Value.Key, "cutsceneIsLoad");
-    settings.SetToolTip("cs" + what.Key, what.Value.Value);
+  foreach (var what in vars.cutsceneExclusions)
+  {
+    settings.Add("cutsceneIsLoad_cutsceneExclusion" + what.Key, true, what.Value.Item1, "cutsceneIsLoad");
+    settings.SetToolTip("cutsceneIsLoad_cutsceneExclusion" + what.Key, what.Value.Item2);
   }
   
   settings.Add("storyResets", false, "Autoreset Story Runs upon Quit");
@@ -103,19 +124,23 @@ startup
   settings.Add("story", true, "Story Boss Splits");
   settings.SetToolTip("story", "Uncheck to disable all boss splitting.");
   
-  vars.splits = new Dictionary<string, HashSet<string>> {
+  vars.splits = new Dictionary<string, HashSet<string>>
+  {
     {"flags", new HashSet<string>()},
     {"objectives", new HashSet<string>()}
   };
   
-  foreach (var split in storyBossSplits) {
+  foreach (var split in storyBossSplits)
+  {
     settings.Add(split.Key, !split.Value.Key.EndsWith("(optional)"), split.Value.Key, "story");
     settings.SetToolTip(split.Key, split.Value.Value);
     
-    if (split.Key.StartsWith("flag")) {
+    if (split.Key.StartsWith("flag"))
+    {
       vars.splits["flags"].Add(split.Key);
     }
-    else if (split.Key.StartsWith("quest")) {
+    else if (split.Key.StartsWith("quest"))
+    {
       vars.splits["objectives"].Add(split.Key);
     }
   }
@@ -125,12 +150,14 @@ startup
   vars.completedFlags = new HashSet<ushort>();
   vars.completedObjectives = new HashSet<string>();
   vars.excludedCutscenes = new HashSet<int>();
+  vars.cutscenesWitnessed = new HashSet<int>();
   vars.runInit = false;
   
   vars.timerStart = (EventHandler) ((s, e) => {
     vars.completedFlags.Clear();
     vars.completedObjectives.Clear();
     vars.excludedCutscenes.Clear();
+    vars.cutscenesWitnessed.Clear();
     vars.runInit = false;
   });
   
@@ -241,11 +268,15 @@ update
   if (!vars.runInit) {
     vars.runInit = true;
     
-    foreach (var sceneGroup in vars.versionedScenes[version])
+    foreach (var sceneGroup in vars.cutsceneExclusions)
     {
-      if(settings["cs" + sceneGroup.Key.ToString()]) {
-        foreach (var scene in sceneGroup.Value)
-          vars.excludedCutscenes.Add(scene);
+      if (settings["cutsceneIsLoad_cutsceneExclusion" + sceneGroup.Key.ToString()])
+      {
+        foreach (var scene in sceneGroup.Value.Item3)
+        {
+          vars.excludedCutscenes.Add(vars.versionedCutscenes[version][scene]);
+          print("Added " + vars.versionedCutscenes[version][scene] + " to excluded cutscenes");
+        }
       }
     }
   }
@@ -261,15 +292,32 @@ start
 split
 {
   if (vars.gameMode.Current == 0) {
+
+    // Cutscene based splits
+    // Read the current cutscene. Split if this cutscene is tracked
+    if (!vars.cutscenesWitnessed.Contains(vars.currentCutscene.Current))
+    {
+      foreach (var pair in vars.versionedCutscenes[version])
+      {
+        if (pair.Value == vars.currentCutscene.Current && settings["cutscene" + pair.Key])
+        {
+          vars.cutscenesWitnessed.Add(vars.currentCutscene.Current);
+          print("Split on cutscene " + pair.Key);
+          return true;
+        }
+      }
+    }
     
     // Story flagX splits
     // Read the most recent flag if flag count increased. Split if the flag is tracked.
     // TODO Improve this algorithm to reduce flag loss?
     
-    if (vars.flagCount.Old != 0 && vars.flagCount.Old < vars.flagCount.Current) {
+    if (vars.flagCount.Old != 0 && vars.flagCount.Old < vars.flagCount.Current)
+    {
       ushort flagAtIndex = vars.flagHashSetItemAt(vars.flagSet.Current, vars.flagCount.Current - 1);
       print("Got new flag " + flagAtIndex);
-      if (settings["flag" + flagAtIndex.ToString()] && !vars.completedFlags.Contains(flagAtIndex)) {
+      if (settings["flag" + flagAtIndex.ToString()] && !vars.completedFlags.Contains(flagAtIndex))
+      {
         vars.completedFlags.Add(flagAtIndex);
         print("Split on flag " + flagAtIndex);
         return true;
@@ -280,12 +328,14 @@ split
     // Read through active quest list and retrieve any tracked ones. For each, check if the marked objective is finished.
     
     var objTracked = new Dictionary<ushort, int>();
-    foreach (var split in vars.splits["objectives"]) {
+    foreach (var split in vars.splits["objectives"])
+    {
       if (!settings[split]) continue;
       
       ushort ID = UInt16.Parse(split.Substring(5, split.IndexOf("_") - 5));
       int obj = Int32.Parse(split.Substring(split.IndexOf("_") + 4));
-      if (!vars.completedObjectives.Contains(split) && (!objTracked.ContainsKey(ID) || objTracked[ID] > obj)) {
+      if (!vars.completedObjectives.Contains(split) && (!objTracked.ContainsKey(ID) || objTracked[ID] > obj))
+      {
         objTracked[ID] = obj;
       }
     }
@@ -294,19 +344,23 @@ split
     
     int questCount = vars.objectListSize(vars.questList.Current);
 
-    for (int index = 0; index < questCount; index++) {
+    for (int index = 0; index < questCount; index++)
+    {
       int questAddr = vars.objectListItemAt(vars.questList.Current, index);
       ushort ID = vars.questGetID(questAddr);
       
-      if (objTracked.ContainsKey(ID)) {
+      if (objTracked.ContainsKey(ID))
+      {
         int objectiveList = vars.questGetObjectives(questAddr);
         int objectiveCount = vars.objectListSize(objectiveList);
         
-        if (objTracked[ID] < objectiveCount) {
+        if (objTracked[ID] < objectiveCount)
+        {
           int objectiveAddr = vars.objectListItemAt(objectiveList, index);
           bool finished = vars.questObjectiveGetFinished(objectiveAddr);
           
-          if (finished) {
+          if (finished)
+          {
             vars.completedObjectives.Add("quest" + ID + "_obj" + objTracked[ID]);
             print("Quest split via objective, ID=" + ID + ", Obj=" + objTracked[ID]);
             return true;
@@ -319,11 +373,13 @@ split
     
     int doneQuestCount = vars.objectListSize(vars.doneQuestList.Current);
     
-    for (int index = 0; index < doneQuestCount; index++) {
+    for (int index = 0; index < doneQuestCount; index++)
+    {
       int questAddr = vars.objectListItemAt(vars.doneQuestList, index);
       ushort ID = vars.questGetID(questAddr);
       
-      if (objTracked.ContainsKey(ID)) {
+      if (objTracked.ContainsKey(ID))
+      {
         vars.completedObjectives.Add("quest" + ID + "_obj" + objTracked[ID]);
         print("Quest split via completion, ID=" + ID + ", Obj=" + objTracked[ID]);
         return true;
