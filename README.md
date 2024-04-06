@@ -39,7 +39,12 @@ LiveSplit Autosplitter for Secrets of Grindea
 * Captain Bones
 * Evil Eye
 * Luke
+* Puzzle floor reached
+* Puzzle floor beaten
+* Top of the tower reached
+* Dad
 * Bishop (optional)
+* Cataclysm Zhamla (optional)
 * Living Rune Bock (optional)
 * Bossling (optional)
 * Shruboss (optional)
